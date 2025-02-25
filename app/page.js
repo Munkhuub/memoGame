@@ -6,27 +6,38 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [match, setMatch] = useState();
   const [cardValue, setCardValue] = useState([
-    { value: 1, isShow: false },
-    { value: 2, isShow: false },
-    { value: 3, isShow: false },
-    { value: 4, isShow: false },
-    { value: 5, isShow: false },
-    { value: 6, isShow: false },
-    { value: 7, isShow: false },
-    { value: 8, isShow: false },
-    { value: 9, isShow: false },
-    { value: 10, isShow: false },
-    { value: 11, isShow: false },
-    { value: 12, isShow: false },
+    { value: 1, isShown: false },
+    { value: 2, isShown: false },
+    { value: 3, isShown: false },
+    { value: 4, isShown: false },
+    { value: 5, isShown: false },
+    { value: 6, isShown: false },
+    { value: 7, isShown: false },
+    { value: 8, isShown: false },
+    { value: 9, isShown: false },
+    { value: 10, isShown: false },
+    { value: 11, isShown: false },
+    { value: 12, isShown: false },
   ]);
+
+  const handleClicked = (index) => {
+    const newCardValue = [...cardValue];
+    if (newCardValue.length < 2) return;
+    newCardValue[index].isShown = true;
+    setCardValue(newCardValue);
+  };
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.board}>
-          {cardValue.map((item, i) => {
+          {cardValue.map((item, index) => {
             return (
-              <div className={styles.cards} key={i}>
-                {item.isShow == true ? item.value : ""}
+              <div
+                className={styles.cards}
+                key={index}
+                onClick={() => handleClicked(index)}
+              >
+                {item.isShown == true ? item.value : ""}
               </div>
             );
           })}
@@ -41,5 +52,9 @@ export default function Home() {
   );
 }
 
-// ergedeg togloom
+// memo game
+// 4x4 nudend hos toonuud baina
+// ehendee haragdahgui
+// negen zereg 2 card haragdah, hugatsaa 1 sec
+// taarwal neg array ruu pushleh
 // darahad ungu ni uurchlugduud gardag bh
