@@ -34,12 +34,30 @@ export default function Home() {
           </div>
           <div className={styles.cardLeft}>
             <img src="/images/sun.png"></img>
+            <div className={styles.city}></div>
+            <div className={styles.temperature}></div>
+            <div className={styles.condition}></div>
+            <div className={styles.icons}>
+              <img src="/images/home.png"></img>
+              <img src="/images/location.png"></img>
+              <img src="/images/heart.png"></img>
+              <img src="/images/user.png"></img>
+            </div>
           </div>
         </div>
         <div className={styles.right}>
           <img src="/images/dark.png"></img>
           <div className={styles.cardRight}>
             <img src="/images/moon.png"></img>
+            <div className={styles.city}></div>
+            <div className={styles.temperature}></div>
+            <div className={styles.condition}></div>
+            <div className={styles.icons}>
+              <img src="/images/home.png"></img>
+              <img src="/images/location.png"></img>
+              <img src="/images/heart.png"></img>
+              <img src="/images/user.png"></img>
+            </div>
           </div>
         </div>
       </div>
