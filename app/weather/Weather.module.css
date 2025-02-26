@@ -78,3 +78,16 @@
   width: 32px;
   height: 32px;
 }
+.box {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 200px;
+  border: 1px solid red;
+  z-index: 5;
+  background-color: black;
+}
+.country {
+  font-size: 8px;
+  color: white;
+}

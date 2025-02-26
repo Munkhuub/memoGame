@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [city, setCity] = useState("Ulaanbaatar");
   const [data, setData] = useState(null);
+  const [cities, setCities] = useState(null);
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       const response = await fetch(
-        "https://api.weatherapi.com/v1/forecast.json?key=399cb6193e6743db8a673748252502&q${city}",
+        `https://api.weatherapi.com/v1/forecast.json?key=399cb6193e6743db8a673748252502&q=${city}`,
         {
           method: "GET",
         }
@@ -21,7 +23,36 @@ export default function Home() {
     };
     getData();
   }, [city]);
-  console.log(data);
+
+  useEffect(() => {
+    const getDataCountry = async () => {
+      const response = await fetch(
+        `https://countriesnow.space/api/v0.1/countries`,
+        {
+          method: "GET",
+        }
+      );
+      const dataCountry = await response.json();
+
+      let cities = [];
+
+      for (let i = 0; i < dataCountry?.data.length; i++) {
+        for (let j = 0; j < dataCountry?.data[i].cities.length; j++) {
+          cities.push(dataCountry?.data[i].cities[j]);
+        }
+        return setCities(cities);
+      }
+
+      setCities(cities);
+    };
+    getDataCountry();
+  }, []);
+
+  console.log(cities);
+
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
 
   return (
     <div className={styles.page}>
@@ -30,13 +61,31 @@ export default function Home() {
           <img src="/images/light.png"></img>
           <div className={styles.search}>
             <img src="/images/search.png"></img>
-            <input type="search" />
+
+            <input
+              type="search"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Search"
+            />
           </div>
           <div className={styles.cardLeft}>
+            <div className={styles.city}>{data?.location.name}</div>
             <img src="/images/sun.png"></img>
-            <div className={styles.city}></div>
-            <div className={styles.temperature}></div>
-            <div className={styles.condition}></div>
+            <div className={styles.temperature}>{data?.current.temp_c}</div>
+            <div className={styles.condition}>
+              {data?.current.condition.text}
+            </div>
+            {/* <div className={styles.box}>
+              {cities?.map((item, index) => {
+                return (
+                  <div key={index} className={styles.country}>
+                    {item}adaasdasdasdadssd
+                  </div>
+                );
+              })}
+            </div> */}
+
             <div className={styles.icons}>
               <img src="/images/home.png"></img>
               <img src="/images/location.png"></img>
