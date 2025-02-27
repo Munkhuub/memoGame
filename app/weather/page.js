@@ -33,27 +33,32 @@ export default function Home() {
         }
       );
       const dataCountry = await response.json();
+      setCities(dataCountry);
 
-      let cities = [];
-
-      for (let i = 0; i < dataCountry?.data.length; i++) {
-        for (let j = 0; j < dataCountry?.data[i].cities.length; j++) {
-          cities.push(dataCountry?.data[i].cities[j]);
-        }
-        return setCities(cities);
-      }
-
-      setCities(cities);
+      // let cities = [];
+      // for (let i = 0; i < dataCountry?.data.length; i++) {
+      //   for (let j = 0; j < dataCountry?.data[i].cities.length; j++) {
+      //     cities.push(dataCountry?.data[i].cities[j]);
+      //   }
+      // }
+      // return setCities(cities);
     };
     getDataCountry();
   }, []);
-
   console.log(cities);
-
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
 
+  const filteredCities = cities?.data.filter((item) =>
+    item.country.includes(input)
+  );
+  console.log(filteredCities);
+
+  const handleSelectedCity = (selectedCity, selectedCountry) => {
+    setCity(`${selectedCity}, ${selectedCountry}`);
+    setInput("");
+  };
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -69,6 +74,22 @@ export default function Home() {
               placeholder="Search"
             />
           </div>
+          <div className={styles.resultContainer}>
+            {filteredCities?.length > 0 &&
+              filteredCities?.map((item, index) => (
+                <div key={index} className={styles.searchResult}>
+                  {item.cities.map((itm, idx) => (
+                    <div
+                      key={idx}
+                      className={styles.filteredcity}
+                      onClick={data}
+                    >
+                      {itm}, {item.country}
+                    </div>
+                  ))}
+                </div>
+              ))}
+          </div>
           <div className={styles.cardLeft}>
             <div className={styles.city}>{data?.location.name}</div>
             <img src="/images/sun.png"></img>
@@ -76,16 +97,6 @@ export default function Home() {
             <div className={styles.condition}>
               {data?.current.condition.text}
             </div>
-            {/* <div className={styles.box}>
-              {cities?.map((item, index) => {
-                return (
-                  <div key={index} className={styles.country}>
-                    {item}adaasdasdasdadssd
-                  </div>
-                );
-              })}
-            </div> */}
-
             <div className={styles.icons}>
               <img src="/images/home.png"></img>
               <img src="/images/location.png"></img>
