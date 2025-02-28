@@ -49,16 +49,36 @@ export default function Home() {
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
+  const filteredCities =
+    input === ""
+      ? []
+      : cities?.data
+          ?.filter((item) => {
+            for (let i = 0; i < item.cities.length; i++) {
+              const cityName = item.cities[i].toLowerCase();
+              if (cityName.includes(input.toLowerCase())) {
+                return true;
+              }
+            }
+            return false;
+          })
+          .map((country) => {
+            return {
+              country: country.country,
+              cities: country.cities.filter((cityName) =>
+                cityName.toLowerCase().includes(input.toLowerCase())
+              ),
+            };
+          });
+  // const filteredCities = cities?.data?.filter((item) => {
+  //   const matchingCities = item.toLowerCase().includes(input.toLowerCase());
+  // });
+  // [];
 
-  const filteredCities = cities?.data.filter((item) =>
-    item.country.includes(input)
-  );
-  console.log(filteredCities);
-
-  const handleSelectedCity = (selectedCity, selectedCountry) => {
-    setCity(`${selectedCity}, ${selectedCountry}`);
-    setInput("");
-  };
+  // const handleSelectedCity = (selectedCity, selectedCountry) => {
+  //   setCity(`${selectedCity}, ${selectedCountry}`);
+  //   setInput("");
+  // };
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -82,7 +102,7 @@ export default function Home() {
                     <div
                       key={idx}
                       className={styles.filteredcity}
-                      onClick={data}
+                      onClick={() => setCity(`${itm}, ${item.country}`)}
                     >
                       {itm}, {item.country}
                     </div>
@@ -93,7 +113,7 @@ export default function Home() {
           <div className={styles.cardLeft}>
             <div className={styles.city}>{data?.location.name}</div>
             <img src="/images/sun.png"></img>
-            <div className={styles.temperature}>{data?.current.temp_c}</div>
+            <div className={styles.temperature}>{data?.current.temp_c}°</div>
             <div className={styles.condition}>
               {data?.current.condition.text}
             </div>
@@ -109,9 +129,13 @@ export default function Home() {
           <img src="/images/dark.png"></img>
           <div className={styles.cardRight}>
             <img src="/images/moon.png"></img>
-            <div className={styles.city}></div>
-            <div className={styles.temperature}></div>
-            <div className={styles.condition}></div>
+            <div className={styles.cityNight}>{data?.location.name}</div>
+            <div className={styles.temperatureNight}>
+              {data?.forecast.forecastday[0].hour[0].temp_c}°
+            </div>
+            <div className={styles.conditionNight}>
+              {data?.forecast.forecastday[0].hour[0].condition.text}
+            </div>
             <div className={styles.icons}>
               <img src="/images/home.png"></img>
               <img src="/images/location.png"></img>
