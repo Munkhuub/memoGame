@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const getData = async () => {
       const response = await fetch(
-        `https://api.weatherapi.com/v1/forecast.json?key=399cb6193e6743db8a673748252502&q=${city}`,
+        `https://api.weatherapi.com/v1/forecast.json?key=399cb6193e6743db8a673748252502&q=${city}&days=1`,
         {
           method: "GET",
         }
@@ -34,14 +34,6 @@ export default function Home() {
       );
       const dataCountry = await response.json();
       setCities(dataCountry);
-
-      // let cities = [];
-      // for (let i = 0; i < dataCountry?.data.length; i++) {
-      //   for (let j = 0; j < dataCountry?.data[i].cities.length; j++) {
-      //     cities.push(dataCountry?.data[i].cities[j]);
-      //   }
-      // }
-      // return setCities(cities);
     };
     getDataCountry();
   }, []);
@@ -70,15 +62,13 @@ export default function Home() {
               ),
             };
           });
-  // const filteredCities = cities?.data?.filter((item) => {
-  //   const matchingCities = item.toLowerCase().includes(input.toLowerCase());
-  // });
-  // [];
 
-  // const handleSelectedCity = (selectedCity, selectedCountry) => {
-  //   setCity(`${selectedCity}, ${selectedCountry}`);
-  //   setInput("");
-  // };
+  const nightForecast = data?.forecast?.forecastday?.[0]?.hour?.find(
+    (hourData) => {
+      return hourData.time.includes("21:00");
+    }
+  );
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -111,7 +101,12 @@ export default function Home() {
               ))}
           </div>
           <div className={styles.cardLeft}>
-            <div className={styles.city}>{data?.location.name}</div>
+            <div className={styles.dateNoon}>
+              {data?.location.localtime.slice(0, 10)}
+            </div>
+            <div className="text-[20px] bg-amber-500">
+              {data?.location.name}
+            </div>
             <img src="/images/sun.png"></img>
             <div className={styles.temperature}>{data?.current.temp_c}°</div>
             <div className={styles.condition}>
@@ -128,13 +123,16 @@ export default function Home() {
         <div className={styles.right}>
           <img src="/images/dark.png"></img>
           <div className={styles.cardRight}>
+            <div className={styles.dateNight}>
+              {data?.location.localtime.slice(0, 10)}
+            </div>
             <img src="/images/moon.png"></img>
-            <div className={styles.cityNight}>{data?.location.name}</div>
+            <div className={styles.cityNight}>{data?.location?.name}</div>
             <div className={styles.temperatureNight}>
-              {data?.forecast.forecastday[0].hour[0].temp_c}°
+              {nightForecast?.temp_c || data?.current?.temp_c}°
             </div>
             <div className={styles.conditionNight}>
-              {data?.forecast.forecastday[0].hour[0].condition.text}
+              {nightForecast?.condition?.text || "Night forecast"}
             </div>
             <div className={styles.icons}>
               <img src="/images/home.png"></img>

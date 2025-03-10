@@ -112,7 +112,6 @@
   color: white;
 }
 .city {
-  margin-top: 70px;
   font-size: 48px;
   color: rgba(17, 24, 39, 1);
   font-weight: 800;
@@ -152,4 +151,12 @@
   font-size: 48px;
   color: rgba(255, 255, 255, 1);
   font-weight: 800;
+}
+.dateNight {
+  color: rgba(156, 163, 175, 1);
+  font-size: 18px;
+}
+.dateNoon {
+  color: rgba(17, 24, 39, 1);
+  font-size: 18px;
 }
